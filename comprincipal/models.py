@@ -2,6 +2,9 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 lista_status = (
     ('NV', 'Não Verificado'),
@@ -32,11 +35,8 @@ class Cliente(models.Model):
     status_verificacao = models.CharField(max_length=200, choices=lista_status, default='NV')
     numero_transacoes = models.IntegerField(default=0)
     valor_transacoes = models.FloatField(default=0)
-    reputacao = models.FloatField()
-    data_entrou = models.DateTimeField()
-    data_ultimo_login = models.DateTimeField(default=data_entrou)
+    reputacao = models.FloatField(default=0)
     login_email_token=models.CharField(max_length=50,default='Token')
-
 
 
 class Anuncio(models.Model):

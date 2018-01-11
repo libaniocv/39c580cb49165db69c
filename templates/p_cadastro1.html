@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block titulo %}Cadastro{% endblock %}
+
+{% block conteudo %}
+ <h2>Cadastro - Etapa 1</h2>
+  <form method="post">
+    {% csrf_token %}
+
+{% for field in form %}
+      <p>
+        {{ field.label_tag }}<br>
+        {{ field }}
+
+      </p>
+    {% endfor %}
+    <button type="submit">Sign up</button>
+  </form>
+
+{% endblock %}

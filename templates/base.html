@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Site - {% block titulo %}{% endblock %}</title>
+</head>
+<body>
+<h1>Site em DEBUG</h1>
+<br>
+<div>
+
+        {% if user.is_authenticated %}
+            Username: {{ user }} |
+            Nome: {{ cliente.nome }} |
+            Saldo: {{ cliente.saldo }} |
+            E-mail: {{ user.email }} |
+        {% else %}
+        Usuario não logado
+        {% endif %}
+
+</div>
+<div>
+    {% block conteudo %}
+
+    {% endblock %}
+</div>
+
+<br><br>
+Rodapé
+</body>
+</html>
