@@ -1,7 +1,8 @@
-{% block content %}
+{% extends "base.html" %}
+{% block conteudo %}
 
 {% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
+<p>Usuário e Senha não conferem.</p>
 {% endif %}
 
 {% if next %}
@@ -13,23 +14,69 @@
     {% endif %}
 {% endif %}
 
-<form method="post" action="{% url 'login' %}">
-{% csrf_token %}
-<table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
-</table>
 
-<input type="submit" value="login" />
-<input type="hidden" name="next" value="{{ next }}" />
-</form>
 
+          <div class=" container    container-fixed-lg">
+            <div class="row">
+              <div class="col-xl-7 col-lg-6 ">
+                <!-- START card -->
+                <div class="card card-transparent">
+                  <div class="card-block">
+
+                    <form id="form-personal" role="form" autocomplete="off" method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                      <div class="row clearfix">
+                        <div class="col-md-6">
+                          <div class="form-group form-group-default required">
+                            <label>Username</label>
+                            <input type="text" class="form-control"  name="username" autofocus required id="id_username" >
+                          </div>
+                            <div class="form-group form-group-default">
+                            <label>Senha</label>
+                            <input type="password" class="form-control" name="password" required id="id_password" >
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <p class="pull-left">
+
+                      </p>
+                      <p class="pull-right">
+
+                      </p>
+                      <div class="clearfix"></div>
+                      <input class="btn btn-primary" type="submit" value="Login"></input>
+
+
+                    </form>
+                  </div>
+                </div>
+                <!-- END card -->
+              </div>
+              <div class="col-xl-5 col-lg-6">
+                <!-- START card -->
+                <div class="card card-transparent">
+                  <div class="card-header ">
+                    <div class="card-title">Validation
+                    </div>
+                  </div>
+                  <div class="card-block">
+                    <h3>Showcase and guide users with a <br>
+							better User Interface &amp; Experience.</h3>
+                    <p>Forms are one of the most important components
+                      <br> when it comes to a dashboard. Recognizing that fact, users are
+                      <br>able work in a maximum content width.</p>
+                    <br>
+                    <p class="small hint-text m-t-5">VIA senior product manager
+                      <br> for UI/UX at REVOX</p>
+                    <button class="btn btn-primary btn-cons">More</button>
+                  </div>
+                </div>
+                <!-- END card -->
+              </div>
+            </div>
+          </div>
 
 
 {% endblock %}

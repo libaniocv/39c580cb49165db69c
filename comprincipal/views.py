@@ -51,7 +51,6 @@ def cadastro1(request):
                 return redirect('/cadastro/')
         else:
             form=UserCreationForm()
-            print(dir(form))
             context={
                 'form':form,
             }
@@ -96,3 +95,7 @@ def cadastro2(request):
 
 
 ##------Debug------##
+
+def teste(request):
+    context={}
+    return render(request,'executive_default.html',context)

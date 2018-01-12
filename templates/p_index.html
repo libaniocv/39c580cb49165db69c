@@ -1,4 +1,7 @@
 {% extends "base.html" %}
+{% load static %}
+
+
 
 {% block titulo %}Pagina Inicial{% endblock %}
 
@@ -10,4 +13,7 @@
     <b>Não logado</b>
 {% endif %}
 {{ data }}
+
+<br>
+    <img src="{% static "download.jpg" %}" alt="My image"/>
 {% endblock %}
