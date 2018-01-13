@@ -4,8 +4,10 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from . import models
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import UserCreationForm
+#from django.contrib.auth.forms import UserCreationForm
+from . import forms
 from django.contrib.auth import authenticate,login
+import django.forms as django_forms
 
 # Create your views here.
 
@@ -19,6 +21,7 @@ def index(request):
         # Link com cliente
         try:
             c = models.Cliente.objects.get(user=u)
+            print(c.foto_perfil)
         except:
             return redirect('/cadastro/etapa2/')
 
@@ -38,7 +41,7 @@ def cadastro1(request):
         return redirect('/')
     else:
         if request.method=='POST':
-            form=UserCreationForm(request.POST)
+            form=forms.UserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 username=form.cleaned_data.get('username')
@@ -50,7 +53,7 @@ def cadastro1(request):
             else:
                 return redirect('/cadastro/')
         else:
-            form=UserCreationForm()
+            form=forms.UserCreationForm()
             context={
                 'form':form,
             }
@@ -66,7 +69,27 @@ def cadastro1(request):
 #Página cadastro perfil informaçoes adicionais
 
 def cadastro2(request):
-    return HttpResponse("Em construçao")
+    if request.method=='POST':
+        usuario = User.objects.get(pk=request.user.id)
+        cliente = models.Cliente(user=usuario)
+
+        form=models.ClienteFormRegistro(request.POST,instance=cliente)
+
+        if form.is_valid():
+
+            form.save()
+            return redirect('/')
+        else:
+            print(form.errors)
+            return HttpResponse("Houve um erro no cadastro, tente novamente)")
+
+    else:
+        form=models.ClienteFormRegistro()
+        context={
+            'form':form
+        }
+        return render(request,'p_cadastro2.html',context)
+
 
 
 #Pagina verificaçao de documentos

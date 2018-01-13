@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.forms import ModelForm
 
 
 lista_status = (
@@ -37,6 +38,17 @@ class Cliente(models.Model):
     valor_transacoes = models.FloatField(default=0)
     reputacao = models.FloatField(default=0)
     login_email_token=models.CharField(max_length=50,default='Token')
+    foto_perfil=models.ImageField(upload_to='perfil/',default='perfil/generico.png')
+
+class ClienteFormRegistro(ModelForm):
+    class Meta:
+        model=Cliente
+        fields=[
+            'nome',
+            'cpf',
+            'endereco',
+            'telefone',
+        ]
 
 
 class Anuncio(models.Model):
