@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import ModelForm
+from django.forms import ModelForm,ModelMultipleChoiceField,CheckboxSelectMultiple
 
 
 lista_status = (
@@ -23,6 +23,14 @@ lista_metodos = (
 
 
 # Create your models here.
+class MetodoPagamento(models.Model):
+    nome=models.CharField(max_length=300)
+    abreviacao=models.CharField(max_length=10)
+
+    def __unicode__(self):
+        return self.nome
+
+
 class Cliente(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     nome = models.CharField(max_length=200)
@@ -47,6 +55,7 @@ class ClienteFormRegistro(ModelForm):
             'cpf',
             'endereco',
             'telefone',
+            'foto_perfil'
 
         ]
 
@@ -58,7 +67,19 @@ class Anuncio(models.Model):
     descricao = models.TextField()
     minimo = models.FloatField()  #Em reais
     maximo = models.FloatField()  #Em reais
-    metodos = models.CharField(max_length=250)  #Para manter pureza de código, iremos limitar as opções no front-end
+    metodos = models.ManyToManyField(MetodoPagamento)
+
+class AnuncioForm(ModelForm):
+    metodos=ModelMultipleChoiceField(queryset=MetodoPagamento.objects.all(), widget=CheckboxSelectMultiple)
+    class Meta:
+        model = Anuncio
+        fields = [
+            'cotacao',
+            'descricao',
+            'minimo',
+            'maximo'
+        ]
+
 
 
 class Representante(models.Model):

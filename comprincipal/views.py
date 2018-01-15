@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.core.files.storage import FileSystemStorage
 
 from . import models
 
@@ -100,6 +101,7 @@ def cadastro2(request):
 
 
 #Pagina Perfil
+#Pagina editar perfil
 def verperfil(request):
     erros = []
     u = []
@@ -110,8 +112,6 @@ def verperfil(request):
         # Link com cliente
         try:
             c = models.Cliente.objects.get(user=u)
-
-
 
         except:
             return redirect('/cadastro/etapa2/')
@@ -138,9 +138,23 @@ def verperfil(request):
                 c.save()
             except:
                 erros.append("Número inválido ou já registrado")
+            print(request.POST.get("foto_perfil"))
 
-            c.endereco = request.POST.get("endereco")
-            c.save()
+            print(len(request.FILES))
+            if len(request.FILES)==0:
+                pass
+            else:
+                form=models.ClienteFormRegistro(request.POST,request.FILES)
+                temp=request.FILES.get('foto_perfil')
+                c.foto_perfil=temp
+                c.save()
+
+
+            try:
+                c.endereco = request.POST.get("endereco")
+                c.save()
+            except:
+                erros.append("Não foi possível mudar o endereço")
 
             return redirect('Perfil')
 
@@ -159,9 +173,33 @@ def verperfil(request):
         return redirect('/login/')
 
 
-#Pagina editar perfil
+
+#Pagina criar anuncio
+def criaranuncio(request):
+    erros = []
+    u = []
+    c = []
+    if request.user.is_authenticated:
+        # Obter usuario
+        u = User.objects.get(pk=request.user.id)
+        # Link com cliente
+        try:
+            c = models.Cliente.objects.get(user=u)
+
+        except:
+            return redirect('/cadastro/etapa2/')
 
 
+    if request.method=='POST':
+        pass
+    else:
+        form=models.AnuncioForm()
+        context={
+            'form':form,
+            'cliente':c
+        }
+
+        return render(request,'p_novoanuncio.html',context)
 
 
 ##------Admin-----##
@@ -176,5 +214,40 @@ def verperfil(request):
 ##------Debug------##
 
 def teste(request):
-    context = {}
-    return render(request, 'executive_default.html', context)
+    m=models.MetodoPagamento()
+
+    m.nome='Banco do Brasil'
+    m.abreviacao='BB'
+    m.save()
+
+    m=models.MetodoPagamento()
+    m.nome='Itaú'
+    m.abreviacao='IT'
+    m.save()
+
+
+    m=models.MetodoPagamento()
+    m.nome='Santander'
+    m.abreviacao='ST'
+    m.save()
+    m=models.MetodoPagamento()
+
+
+    m.nome='Caixa Econômica Federal'
+    m.abreviacao='CEF'
+    m.save()
+    m=models.MetodoPagamento()
+
+    m.nome='Bradesco'
+    m.abreviacao='BRD'
+    m.save()
+    m=models.MetodoPagamento()
+
+    m.nome='HSBC'
+    m.abreviacao='HSBC'
+    m.save()
+
+
+
+
+    return HttpResponse("Populated")

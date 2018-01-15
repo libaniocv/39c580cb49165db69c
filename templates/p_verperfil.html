@@ -2,10 +2,8 @@
 {% block titulo %}Perfil {% endblock %}
 {% block conteudo %}
 
-
-
     <form id="form-work" class="form-horizontal" role="form" autocomplete="off" novalidate="novalidate" method="post"
-          action="{% url 'Perfil' %}">
+          action="{% url 'Perfil' %}" enctype="multipart/form-data">
         {% csrf_token %}
         <br>
 
@@ -48,9 +46,19 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label for="id_foto_perfil" class="col-md-3 control-label">Foto de Perfil</label>
+
+            <div class="col-md-9">
+
+                <input type="file" class="form-control" name="foto_perfil" id="id_foto_perfil" />
+            </div>
+        </div>
+
 
         <input class="btn btn-primary" type="submit" value="Atualizar Perfil"></input>
 
 
     </form>
 {% endblock %}
+
