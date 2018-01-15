@@ -8,7 +8,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
@@ -38,14 +37,17 @@ class Migration(migrations.Migration):
                 ('saldo', models.FloatField(default=0)),
                 ('carteira_xrb', models.CharField(max_length=250)),
                 ('telefone', models.CharField(max_length=250, unique=True)),
-                ('status_verificacao', models.CharField(choices=[('NV', 'N\xe3o Verificado'), ('V1', 'Verificado Level 1'), ('V2', 'Verificado Level 2')], default='NV', max_length=200)),
+                ('status_verificacao', models.CharField(
+                    choices=[('NV', 'N\xe3o Verificado'), ('V1', 'Verificado Level 1'), ('V2', 'Verificado Level 2')],
+                    default='NV', max_length=200)),
                 ('numero_transacoes', models.IntegerField(default=0)),
                 ('valor_transacoes', models.FloatField(default=0)),
                 ('reputacao', models.FloatField()),
                 ('data_entrou', models.DateTimeField()),
                 ('data_ultimo_login', models.DateTimeField(default=models.DateTimeField())),
                 ('login_email_token', models.CharField(default='Token', max_length=50)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                'user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
@@ -53,7 +55,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('permissao', models.IntegerField(default=0)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                (
+                'user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.AddField(

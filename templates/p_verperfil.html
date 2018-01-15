@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block titulo %}Perfil {% endblock %}
+{% block conteudo %}
+
+
+
+    <form id="form-work" class="form-horizontal" role="form" autocomplete="off" novalidate="novalidate" method="post"
+          action="{% url 'Perfil' %}">
+        {% csrf_token %}
+        <br>
+
+        <div class="form-group row">
+            <label for="id_nome" class="col-md-3 control-label">Nome Completo</label>
+
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="id_nome" value={{ cliente.nome }} name="nome" required
+                       aria-required="true">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="id_cpf" class="col-md-3 control-label">CPF</label>
+
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="id_cpf" value={{ cliente.cpf }} name="cpf" required
+                       aria-required="true" maxlength="11">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="id_endereco" class="col-md-3 control-label">Endereço</label>
+
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="id_endereco" value="{{ cliente.endereco }}" name="endereco"
+                       required aria-required="true">
+            </div>
+        </div>
+
+
+        <div class="form-group row">
+            <label for="id_telefone" class="col-md-3 control-label">Telefone</label>
+
+            <div class="col-md-9">
+                <input type="text" class="form-control" id="id_telefone" value={{ cliente.telefone }} name="telefone"
+                       required aria-required="true">
+            </div>
+        </div>
+
+
+        <input class="btn btn-primary" type="submit" value="Atualizar Perfil"></input>
+
+
+    </form>
+{% endblock %}

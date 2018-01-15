@@ -6,14 +6,14 @@
 {% block titulo %}Pagina Inicial{% endblock %}
 
 {% block conteudo %}
-{% if user.is_authenticated%}
-    <b>Logado</b>
-    Usuario: {{ cliente.user }}<br>
-{% else %}
-    <b>Não logado</b>
-{% endif %}
-{{ data }}
+    {% if user.is_authenticated %}
+        <b>Logado</b>
+        Usuario: {{ cliente.user }}<br>
+    {% else %}
+        <b>Não logado</b>
+    {% endif %}
+    {{ data }}
 
-<br>
+    <br>
     <img src="{% static "download.jpg" %}" alt="My image"/>
 {% endblock %}

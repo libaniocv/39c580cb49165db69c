@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from . import models
-from django.forms import ModelForm
+
 
 def FormCadastro1(ModelForm):
     class Meta:
-        model=models.Cliente
+        model = models.Cliente
+
 
 from django.forms import EmailField
 
@@ -16,7 +17,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 class UserCreationForm(UserCreationForm):
     email = EmailField(label=_("Email address"), required=True,
-        help_text=_("Required."))
+                       help_text=_("Required."))
 
     class Meta:
         model = User

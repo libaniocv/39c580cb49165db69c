@@ -7,16 +7,17 @@
 <body>
 <h1>Site em DEBUG</h1>
 <br>
+
 <div>
 
-        {% if user.is_authenticated %}
-            Username: {{ user }} |
-            Nome: {{ cliente.nome }} |
-            Saldo: {{ cliente.saldo }} |
-            E-mail: {{ user.email }} |
-        {% else %}
+    {% if user.is_authenticated %}
+        Username: {{ user }} |
+        Nome: {{ cliente.nome }} |
+        Saldo: {{ cliente.saldo }} |
+        E-mail: {{ user.email }} |
+    {% else %}
         Usuario não logado
-        {% endif %}
+    {% endif %}
 
 </div>
 <div>
