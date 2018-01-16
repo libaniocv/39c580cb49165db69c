@@ -8,6 +8,7 @@ from django.core.files.storage import FileSystemStorage
 
 from . import models
 
+
 # from django.contrib.auth.forms import UserCreationForm
 from . import forms
 from django.contrib.auth import authenticate, login
@@ -15,7 +16,7 @@ import django.forms as django_forms
 
 # Create your views here.
 
-#Pagina inicial
+# Pagina inicial
 def index(request):
     u = []
     c = []
@@ -141,14 +142,13 @@ def verperfil(request):
             print(request.POST.get("foto_perfil"))
 
             print(len(request.FILES))
-            if len(request.FILES)==0:
+            if len(request.FILES) == 0:
                 pass
             else:
-                form=models.ClienteFormRegistro(request.POST,request.FILES)
-                temp=request.FILES.get('foto_perfil')
-                c.foto_perfil=temp
+                form = models.ClienteFormRegistro(request.POST, request.FILES)
+                temp = request.FILES.get('foto_perfil')
+                c.foto_perfil = temp
                 c.save()
-
 
             try:
                 c.endereco = request.POST.get("endereco")
@@ -173,7 +173,6 @@ def verperfil(request):
         return redirect('/login/')
 
 
-
 #Pagina criar anuncio
 def criaranuncio(request):
     erros = []
@@ -189,17 +188,50 @@ def criaranuncio(request):
         except:
             return redirect('/cadastro/etapa2/')
 
+    if request.method == 'POST':
+        form=models.AnuncioForm(request.POST)
+        #Deletar anuncio antigo
+        models.Anuncio.objects.get(proprietario=c).delete()
 
-    if request.method=='POST':
-        pass
+
+        t_quantia=request.POST.get("quantia_reservada")
+        t_cotacao=request.POST.get("cotacao")
+        t_descricao=request.POST.get("descricao")
+        t_minimo=request.POST.get("minimo")
+        t_maximo=request.POST.get("maximo")
+        t_metodos=request.POST.getlist('metodos')
+
+        novo_anuncio=models.Anuncio()
+        novo_anuncio.proprietario=c
+        novo_anuncio.quantia_reservada=t_quantia
+        novo_anuncio.cotacao=t_cotacao
+        novo_anuncio.descricao=t_descricao
+        novo_anuncio.minimo=t_minimo
+        novo_anuncio.maximo=t_maximo
+
+
+
+
+        novo_anuncio.save()
+        anuncio_criado=models.Anuncio.objects.get(proprietario=c)
+        print(t_metodos)
+        for i in t_metodos:
+           print(int(i))
+           anuncio_criado.metodos.add(i)
+
+
+
+
+
+        return redirect('CriarAnuncio')
     else:
-        form=models.AnuncioForm()
-        context={
-            'form':form,
-            'cliente':c
+        form = models.AnuncioForm()
+        context = {
+            'form': form,
+            'cliente': c
         }
 
-        return render(request,'p_novoanuncio.html',context)
+        return render(request, 'p_novoanuncio.html', context)
 
 
 ##------Admin-----##
@@ -214,40 +246,35 @@ def criaranuncio(request):
 ##------Debug------##
 
 def teste(request):
-    m=models.MetodoPagamento()
+    m = models.MetodoPagamento()
 
-    m.nome='Banco do Brasil'
-    m.abreviacao='BB'
+    m.nome = 'Banco do Brasil'
+    m.abreviacao = 'BB'
     m.save()
 
-    m=models.MetodoPagamento()
-    m.nome='Itaú'
-    m.abreviacao='IT'
+    m = models.MetodoPagamento()
+    m.nome = 'Itaú'
+    m.abreviacao = 'IT'
     m.save()
 
-
-    m=models.MetodoPagamento()
-    m.nome='Santander'
-    m.abreviacao='ST'
+    m = models.MetodoPagamento()
+    m.nome = 'Santander'
+    m.abreviacao = 'ST'
     m.save()
-    m=models.MetodoPagamento()
+    m = models.MetodoPagamento()
 
-
-    m.nome='Caixa Econômica Federal'
-    m.abreviacao='CEF'
+    m.nome = 'Caixa Econômica Federal'
+    m.abreviacao = 'CEF'
     m.save()
-    m=models.MetodoPagamento()
+    m = models.MetodoPagamento()
 
-    m.nome='Bradesco'
-    m.abreviacao='BRD'
+    m.nome = 'Bradesco'
+    m.abreviacao = 'BRD'
     m.save()
-    m=models.MetodoPagamento()
+    m = models.MetodoPagamento()
 
-    m.nome='HSBC'
-    m.abreviacao='HSBC'
+    m.nome = 'HSBC'
+    m.abreviacao = 'HSBC'
     m.save()
-
-
-
 
     return HttpResponse("Populated")

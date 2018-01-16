@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
-from django.forms import ModelForm,ModelMultipleChoiceField,CheckboxSelectMultiple
+from django.forms import ModelForm, ModelMultipleChoiceField, CheckboxSelectMultiple
 
 
 lista_status = (
@@ -24,8 +24,8 @@ lista_metodos = (
 
 # Create your models here.
 class MetodoPagamento(models.Model):
-    nome=models.CharField(max_length=300)
-    abreviacao=models.CharField(max_length=10)
+    nome = models.CharField(max_length=300)
+    abreviacao = models.CharField(max_length=10)
 
     def __unicode__(self):
         return self.nome
@@ -63,17 +63,23 @@ class ClienteFormRegistro(ModelForm):
 class Anuncio(models.Model):
     proprietario = models.OneToOneField(Cliente, on_delete=models.CASCADE)
     quantia_reservada = models.FloatField()
-    cotacao = models.FloatField()  #Valor em BRL para 1 XRB
+    cotacao = models.FloatField()  # Valor em BRL para 1 XRB
     descricao = models.TextField()
-    minimo = models.FloatField()  #Em reais
-    maximo = models.FloatField()  #Em reais
+    minimo = models.FloatField()  # Em reais
+    maximo = models.FloatField()  # Em reais
     metodos = models.ManyToManyField(MetodoPagamento)
+    def __str__(self):
+        titulo=str(self.proprietario.nome)+": "+str(self.cotacao)
+        return titulo
+
 
 class AnuncioForm(ModelForm):
-    metodos=ModelMultipleChoiceField(queryset=MetodoPagamento.objects.all(), widget=CheckboxSelectMultiple)
+    metodos = ModelMultipleChoiceField(queryset=MetodoPagamento.objects.all(), widget=CheckboxSelectMultiple)
+
     class Meta:
         model = Anuncio
         fields = [
+            'quantia_reservada',
             'cotacao',
             'descricao',
             'minimo',
@@ -81,10 +87,9 @@ class AnuncioForm(ModelForm):
         ]
 
 
-
 class Representante(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #Permissao
+    # Permissao
     permissao = models.IntegerField(default=0)
     # 0: Usuário comum
     # 1: Representante

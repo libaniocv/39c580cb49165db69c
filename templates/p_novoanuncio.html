@@ -1,3 +1,11 @@
+{% extends "base.html" %}
 {% block conteudo %}
+    <form id="form-personal" role="form" autocomplete="off" method="post"
+                              action="{% url 'CriarAnuncio' %}">
+    {% csrf_token %}
+
 {{ form.as_p }}
+
+    <input class="btn btn-primary" type="submit" value="Criar anúncio"></input>
+    </form>
 {% endblock %}
