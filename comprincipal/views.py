@@ -1,18 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.core.files.storage import FileSystemStorage
-
 from . import models
-
-
-# from django.contrib.auth.forms import UserCreationForm
 from . import forms
 from django.contrib.auth import authenticate, login
 import django.forms as django_forms
+
 
 # Create your views here.
 
@@ -30,9 +26,15 @@ def index(request):
         except:
             return redirect('/cadastro/etapa2/')
 
+        try:
+            anuncios=models.Anuncio.objects.all()
+        except:
+            anuncios=[]
+
     context = {
         'mensagem': 'Pagina inicial',
-        'cliente': c
+        'cliente': c,
+        'anuncios': anuncios
     }
 
     return render(request, 'p_index.html', context)
@@ -188,10 +190,22 @@ def criaranuncio(request):
         except:
             return redirect('/cadastro/etapa2/')
 
+    try:
+        an=models.Anuncio.objects.get(proprietario=c)
+        print("Possui anuncio")
+        print(an.pk)
+        return redirect('/')
+    except:
+        print("Não possui anuncio")
+
+
     if request.method == 'POST':
         form=models.AnuncioForm(request.POST)
         #Deletar anuncio antigo
-        models.Anuncio.objects.get(proprietario=c).delete()
+        try:
+            models.Anuncio.objects.get(proprietario=c).delete()
+        except:
+            pass
 
 
         t_quantia=request.POST.get("quantia_reservada")
@@ -233,6 +247,35 @@ def criaranuncio(request):
 
         return render(request, 'p_novoanuncio.html', context)
 
+#Pagina Detalhes anuncio
+def veranuncio(request,anuncioid):
+    erros = []
+    u = []
+    c = []
+    if request.user.is_authenticated:
+        # Obter usuario
+        u = User.objects.get(pk=request.user.id)
+        # Link com cliente
+        try:
+            c = models.Cliente.objects.get(user=u)
+
+        except:
+            return redirect('/cadastro/etapa2/')
+
+    #Pegar anuncio
+    try:
+        a=models.Anuncio.objects.get(pk=anuncioid)
+    except:
+        erro="Anúncio não existe"
+        return HttpResponse(erro)
+
+    context={
+        'cliente':c,
+        'anuncio':a
+    }
+
+    return render(request,'p_veranuncio.html',context)
+
 
 ##------Admin-----##
 #Pagina Admin-inicio
@@ -246,35 +289,9 @@ def criaranuncio(request):
 ##------Debug------##
 
 def teste(request):
-    m = models.MetodoPagamento()
+    try:
+        thread.start_new_thread(th_teste(request.user.id))
+        return HttpResponse("iniciado")
+    except:
+        return HttpResponse("Não foi possivel criar thread")
 
-    m.nome = 'Banco do Brasil'
-    m.abreviacao = 'BB'
-    m.save()
-
-    m = models.MetodoPagamento()
-    m.nome = 'Itaú'
-    m.abreviacao = 'IT'
-    m.save()
-
-    m = models.MetodoPagamento()
-    m.nome = 'Santander'
-    m.abreviacao = 'ST'
-    m.save()
-    m = models.MetodoPagamento()
-
-    m.nome = 'Caixa Econômica Federal'
-    m.abreviacao = 'CEF'
-    m.save()
-    m = models.MetodoPagamento()
-
-    m.nome = 'Bradesco'
-    m.abreviacao = 'BRD'
-    m.save()
-    m = models.MetodoPagamento()
-
-    m.nome = 'HSBC'
-    m.abreviacao = 'HSBC'
-    m.save()
-
-    return HttpResponse("Populated")

@@ -6,14 +6,11 @@
 {% block titulo %}Pagina Inicial{% endblock %}
 
 {% block conteudo %}
-    {% if user.is_authenticated %}
-        <b>Logado</b>
-        Usuario: {{ cliente.user }}<br>
-    {% else %}
-        <b>Não logado</b>
-    {% endif %}
-    {{ data }}
 
-    <br>
-    <img src="{% static "download.jpg" %}" alt="My image"/>
+
+    {% for anuncio in anuncios %}
+        <a href="/anuncio/{{ anuncio.pk }}">{{ anuncio }}</a>
+
+    {% endfor %}
+
 {% endblock %}

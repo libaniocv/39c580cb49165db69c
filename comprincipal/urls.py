@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'cadastro/etapa2/$', views.cadastro2, name='Cadastro2'),
     url(r'teste/$', views.teste, name='teste'),
     url(r'perfil/$', views.verperfil, name='Perfil'),
-    url(r'anuncio/novo$', views.criaranuncio, name='CriarAnuncio'),
+    url(r'anuncio/novo/$', views.criaranuncio, name='CriarAnuncio'),
+    url(r'anuncio/(?P<anuncioid>[0-9]+)/$', views.veranuncio, name='VerAnuncio'),
+
 ]

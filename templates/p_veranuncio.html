@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block conteudo %}
+    Proprietario: {{ anuncio.proprietario }}<br>
+    Cotação: {{ anuncio.cotacao }}<br>
+    Metodos: {% for metodo in anuncio.metodos.all %}<t>{{ metodo }}</t><br>{% endfor %}
+
+{% endblock %}
